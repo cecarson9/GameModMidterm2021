@@ -196,6 +196,7 @@ rvMonsterGrunt::OnDeath
 */
 void rvMonsterGrunt::OnDeath ( void ) {
 	RageStop ( );
+	GiveXP(player, 3);
 	return idAI::OnDeath ( );
 }
 

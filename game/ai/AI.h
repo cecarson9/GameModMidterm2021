@@ -427,6 +427,7 @@ class idProjectile;
 class rvSpawner;
 class rvAIHelper;
 class rvAITether;
+class idPlayer;
 
 class idAI : public idActor {
 friend class rvAIManager;
@@ -842,6 +843,7 @@ public:
 	void					UpdatePlayback					( idVec3 &goalPos, idVec3 &delta, idVec3 &oldorigin, idMat3 &oldaxis );
 
 	void					LookAtEntity					( idEntity *ent, float duration );
+	void					GiveXP							( idPlayer* pl, int xp );
 
 // ----------------------------- Variables ------------------------------------
 
@@ -869,6 +871,7 @@ public:
 	idEntityPtr<rvAIHelper>	helperIdeal;
 	idEntityPtr<idActor>	leader;
 	idEntityPtr<rvSpawner>	spawner;
+	idPlayer *				player;
 
 	bool						ValidateCover					( void );
 

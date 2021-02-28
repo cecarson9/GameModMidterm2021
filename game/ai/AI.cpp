@@ -1360,11 +1360,17 @@ void idAI::UpdateFocus ( const idMat3& orientationAxis ) {
 	}
 }
 
+
+void idAI::GiveXP(idPlayer* pl, int xp) {
+	pl->inventory.GiveXP(xp);
+}
+
 /*
 =====================
 idAI::UpdateStates
 =====================
 */
+
 void idAI::UpdateStates ( void ) {
 	MEM_SCOPED_TAG(tag,MA_DEFAULT);
 

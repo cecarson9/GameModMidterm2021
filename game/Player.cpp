@@ -201,6 +201,8 @@ idInventory::Clear
 void idInventory::Clear( void ) {
 	maxHealth			= 0;
 	weapons				= 0;
+	level				= 0;
+	xp					= 0;
 	carryOverWeapons	= 0;
 	powerups			= 0;
 	armor				= 0;
@@ -339,6 +341,10 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	maxHealth		= dict.GetInt( "maxhealth", "100" );
 	armor			= dict.GetInt( "armor", "50" );
 	maxarmor		= dict.GetInt( "maxarmor", "100" );
+	level			= dict.GetInt( "level", "1");
+	xp				= dict.GetInt( "xp", "0" );
+	xpReq			= dict.GetInt( "xpReq", "10" );
+	xpScale			= dict.GetInt("xpScale", "2");
 
 	// ammo
 	for( i = 0; i < MAX_AMMOTYPES; i++ ) {
@@ -401,6 +407,9 @@ void idInventory::Save( idSaveGame *savefile ) const {
 
 	savefile->WriteInt( maxHealth );
 	savefile->WriteInt( weapons );
+	savefile->WriteInt( level );
+	savefile->WriteInt( xp );
+	savefile->WriteInt( xpReq );
 	savefile->WriteInt( powerups );
 	savefile->WriteInt( armor );
 	savefile->WriteInt( maxarmor );
@@ -481,6 +490,9 @@ void idInventory::Restore( idRestoreGame *savefile ) {
 
 	savefile->ReadInt( maxHealth );
 	savefile->ReadInt( weapons );
+	savefile->ReadInt( level );
+	savefile->ReadInt( xp );
+	savefile->ReadInt( xpReq );
 	savefile->ReadInt( powerups );
 	savefile->ReadInt( armor );
 	savefile->ReadInt( maxarmor );
@@ -1071,6 +1083,15 @@ bool idInventory::UseAmmo( int index, int amount ) {
 	return true;
 }
 
+void idInventory::GiveXP( int enemy_xp ){
+	xp += enemy_xp;
+	if (xp >= xpReq) {
+		level += 1;
+		xp = 0;
+		xpReq += (level * xpScale);
+		maxHealth += 10;
+	}
+}
 /*
 ==============
 idPlayer::idPlayer

@@ -37,6 +37,7 @@ const int	FOCUS_USABLE_TIME			= 100;
 
 const int	MAX_WEAPONS					= 16;
 const int	MAX_AMMO					= 16;
+const int	MAX_LEVEL					= 50;			// setting maximum level
 const int	CARRYOVER_FLAG_AMMO			= 0x40000000;
 const int	CARRYOVER_FLAG_ARMOR_LIGHT	= 0x20000000;
 const int	CARRYOVER_FLAG_ARMOR_HEAVY	= 0x10000000;
@@ -196,6 +197,10 @@ class idInventory {
 public:
 	int						maxHealth;
 	int						weapons;
+	int						level;
+	int						xp;
+	int						xpReq;
+	int						xpScale;
 // RITUAL BEGIN
 // squirrel: Mode-agnostic buymenus
 	int						carryOverWeapons;
@@ -242,6 +247,7 @@ public:
 	int						MaxAmmoForAmmoClass( idPlayer *owner, const char *ammo_classname ) const;
 	int						AmmoIndexForWeaponClass( const char *weapon_classname, int *ammoRequired = NULL );
 	const char *			AmmoClassForWeaponClass( const char *weapon_classname);
+	void					GiveXP(int enemy_xp);								// gives the player xp
 
 // RAVEN BEGIN
 // mekberg: if the player can pick up the ammo at this time
