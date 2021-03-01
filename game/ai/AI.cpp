@@ -1124,7 +1124,7 @@ bool idAI::DoDormantTests ( void ) {
 		return false;
 	}
 	// AI should no longer go dormant when outside of tether
-	if ( IsTethered () && !IsWithinTether ( ) ) {
+	if ( IsTethered() && !IsWithinTether ( ) ) {
 		return false;
 	}
 	return idActor::DoDormantTests ( );
@@ -1362,6 +1362,7 @@ void idAI::UpdateFocus ( const idMat3& orientationAxis ) {
 
 
 void idAI::GiveXP(idPlayer* pl, int xp) {
+	pl = gameLocal.GetLocalPlayer();
 	pl->inventory.GiveXP(xp);
 }
 

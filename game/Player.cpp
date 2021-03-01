@@ -3429,6 +3429,14 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 		_hud->HandleNamedEvent ( "updateArmor" );
 	}
 	
+	temp = _hud->State().GetInt ( "player_level", "-1" );
+	if (temp != inventory.level) {
+		_hud->SetStateInt("player_levelDelta", temp == -1 ? 0 : (temp - inventory.level));
+		_hud->SetStateInt("player_level", inventory.level);
+		_hud->SetStateFloat("player_levelpct", idMath::ClampFloat(0.0f, 1.0f, (float)inventory.xp / (float)inventory.xpReq));
+		_hud->HandleNamedEvent("updateLevel");
+	}
+
 	// Boss bar
 	if ( _hud->State().GetInt ( "boss_health", "-1" ) != (bossEnemy ? bossEnemy->health : -1) ) {
 		if ( !bossEnemy || bossEnemy->health <= 0 ) {
@@ -7231,6 +7239,7 @@ void idPlayer::UpdateFocus( void ) {
 
 				ui->SetStateString( "player_health", va("%i", health ) );
 				ui->SetStateString( "player_armor", va( "%i%%", inventory.armor ) );
+				ui->SetStateString( "player_level", va( "%i", inventory.level ) );
 
 				kv = ent->spawnArgs.MatchPrefix( "gui_", NULL );
 				while ( kv ) {
