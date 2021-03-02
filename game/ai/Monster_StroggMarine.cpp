@@ -23,6 +23,7 @@ protected:
 	virtual void		OnStopMoving					( aiMoveCommand_t oldMoveCommand );
 
 	virtual bool		CheckActions					( void );
+	virtual void		OnDeath							(void);
 
 	int					maxShots;	
 	int					minShots;
@@ -106,6 +107,11 @@ void rvMonsterStroggMarine::Spawn ( void ) {
 
 	shots	 = 0;
 	shotsFired = 0;
+}
+
+void rvMonsterStroggMarine::OnDeath(void) {
+	GiveXP(player, 2);
+	return idAI::OnDeath();
 }
 
 /*

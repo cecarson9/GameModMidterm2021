@@ -1084,12 +1084,14 @@ bool idInventory::UseAmmo( int index, int amount ) {
 }
 
 void idInventory::GiveXP( int enemy_xp ){
-	xp += enemy_xp;
-	if (xp >= xpReq) {
-		level += 1;
-		xp = 0;
-		xpReq += (level * xpScale);
-		maxHealth += 10;
+	if (level < MAX_LEVEL) {
+		xp += enemy_xp;
+		if (xp >= xpReq) {
+			level += 1;
+			xp -= xpReq;
+			xpReq += (level * xpScale);
+			maxHealth += 10;
+		}
 	}
 }
 /*
@@ -3000,6 +3002,9 @@ void idPlayer::SavePersistantInfo( void ) {
 	inventory.GetPersistantData( playerInfo );
 	playerInfo.SetInt( "health", health );
 	playerInfo.SetInt( "current_weapon", currentWeapon );
+	playerInfo.SetInt( "level", inventory.level);
+	playerInfo.SetInt( "xp", inventory.xp);
+	playerInfo.SetInt( "xpReq", inventory.xpReq);
 }
 
 /*
