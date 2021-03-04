@@ -3001,6 +3001,7 @@ void idPlayer::SavePersistantInfo( void ) {
 	playerInfo.Clear();
 	inventory.GetPersistantData( playerInfo );
 	playerInfo.SetInt( "health", health );
+	playerInfo.SetInt("maxHealth", inventory.maxHealth);
 	playerInfo.SetInt( "current_weapon", currentWeapon );
 	playerInfo.SetInt( "level", inventory.level);
 	playerInfo.SetInt( "xp", inventory.xp);
