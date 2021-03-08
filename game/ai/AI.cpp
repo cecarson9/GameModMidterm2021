@@ -3674,6 +3674,17 @@ idAI::
 */
 
 void idAI::OnDeath( void ){
+	idDict spawn;
+	idVec3 origin;
+	idMat3 axis;
+	GetPosition(origin, axis);
+	const char *weapons[11] = { "weapon_blaster", "weapon_machinegun", "weapon_shotgun", "weapon_dmg", "weapon_gauntlet", "weapon_grenadelauncher", "weapon_hyperblaster", "weapon_lightninggun", "weapon_nailgun", "weapon_railgun", "weapon_rocketlauncher" };
+	int randIndex = rand() % 11;
+	spawn.Set("classname", weapons[randIndex]);
+	spawn.Set("origin", origin.ToString());
+	idEntity *loot = NULL;
+	gameLocal.SpawnEntityDef(spawn, &loot);
+
 	if( vehicleController.IsDriving() ){
 		usercmd_t				usercmd;
 
