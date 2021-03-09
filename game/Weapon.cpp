@@ -526,6 +526,7 @@ void rvWeapon::Init( idPlayer* _owner, const idDeclEntityDef* def, int _weaponIn
 	weaponIndex 	= _weaponIndex;
 	mods			= owner->inventory.weaponMods[ weaponIndex ];
 	isStrogg		= _isStrogg;
+	looted			= 0;
 	
 	spawnArgs = weaponDef->dict;
 
@@ -654,6 +655,12 @@ void rvWeapon::Spawn ( void ) {
 
 	// Ammo
 	clipSize			= spawnArgs.GetInt( "clipSize" );
+	if (looted == 0) {
+		int randClip = rand() % 21;
+		clipSize += randClip;
+		spawnArgs.SetInt("clipSize", clipSize);
+		looted += 1;
+	}
 	ammoRequired		= spawnArgs.GetInt( "ammoRequired" );
 	lowAmmo				= spawnArgs.GetInt( "lowAmmo" );
 	ammoType			= GetAmmoIndexForName( spawnArgs.GetString( "ammoType" ) );

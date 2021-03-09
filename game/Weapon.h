@@ -367,7 +367,8 @@ public:
 	int								clipSize;			// 0 means no reload
 	int								ammoClip;
 	int								lowAmmo;			// if ammo in clip hits this threshold, snd_
-	int								maxAmmo;		
+	int								maxAmmo;
+	int								looted;
 
  	// multiplayer
  	int								clipPredictTime;
