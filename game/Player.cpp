@@ -5980,9 +5980,6 @@ void idPlayer::DropWeapon( void ) {
 
 	assert( !gameLocal.isClient );
 
-	if( !gameLocal.isMultiplayer ) {
-		return;
-	}
 
 // RITUAL BEGIN
 // squirrel: don't drop weapons in Buying modes unless "always drop" is on
@@ -8605,6 +8602,11 @@ void idPlayer::PerformImpulse( int impulse ) {
 			idFuncRadioChatter::RepeatLast();
 			break;
 		}
+		case IMPULSE_41: {
+			DropWeapon();
+			break;
+		}
+
 
 // RITUAL BEGIN
 // squirrel: Mode-agnostic buymenus
