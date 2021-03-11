@@ -73,6 +73,8 @@ const int IMPULSE_29			= 29;			// vote no
 const int IMPULSE_40			= 40;			// repeast last radio chatter
 const int IMPULSE_41			= 41;			// swap weapons
 
+
+
 // RAVEN BEGIN
 // bdube: added flashlight
 const int IMPULSE_50			= 50;			// activate flashlight

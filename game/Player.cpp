@@ -204,6 +204,7 @@ void idInventory::Clear( void ) {
 	level				= 0;
 	xp					= 0;
 	carryOverWeapons	= 0;
+	pickUp				= false;
 	powerups			= 0;
 	armor				= 0;
 	maxarmor			= 0;
@@ -345,7 +346,7 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	xp				= dict.GetInt( "xp", "0" );
 	xpReq			= dict.GetInt( "xpReq", "10" );
 	xpScale			= dict.GetInt("xpScale", "2");
-
+	pickUp			= false;
 	// ammo
 	for( i = 0; i < MAX_AMMOTYPES; i++ ) {
 		name = rvWeapon::GetAmmoNameForIndex ( i );
@@ -5980,7 +5981,6 @@ void idPlayer::DropWeapon( void ) {
 
 	assert( !gameLocal.isClient );
 
-
 // RITUAL BEGIN
 // squirrel: don't drop weapons in Buying modes unless "always drop" is on
 	if( gameLocal.mpGame.IsBuyingAllowedInTheCurrentGameMode() && !gameLocal.serverInfo.GetBool( "si_dropWeaponsInBuyingModes" ) ) {
@@ -8603,6 +8603,9 @@ void idPlayer::PerformImpulse( int impulse ) {
 			break;
 		}
 		case IMPULSE_41: {
+			for (int i = 0; i < 30; i++) {
+				inventory.pickUp = true;
+			}
 			DropWeapon();
 			break;
 		}

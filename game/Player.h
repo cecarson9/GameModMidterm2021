@@ -204,6 +204,7 @@ public:
 // RITUAL BEGIN
 // squirrel: Mode-agnostic buymenus
 	int						carryOverWeapons;
+	bool						pickUp;
 // RITUAL END
 	int						powerups;
 	int						armor;
