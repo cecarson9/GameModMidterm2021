@@ -902,7 +902,10 @@ void idItem::Event_Pickup( int clientNum ) {
 		player = (idPlayer*)gameLocal.entities[ clientNum ];
 		player->lastPickupTime = gameLocal.time;
 		if ( player ) {
-			player->GiveItem( this );
+			if (player->inventory.pickUp) {
+				player->GiveItem(this);
+				player->inventory.pickUp = false;
+			}
 		}
 	}
 }
@@ -963,8 +966,13 @@ void idItem::Event_Touch( idEntity *other, trace_t *trace ) {
 	if ( !canPickUp ) {
 		return;
 	}
-
-	Pickup( static_cast<idPlayer *>(other) );
+	if (other->IsType(idPlayer::GetClassType())) {
+		idPlayer *pl = gameLocal.GetLocalPlayer();
+		if (pl->inventory.pickUp) {
+			Pickup(static_cast<idPlayer *>(other));
+			pl->inventory.pickUp = false;
+		}
+	}
 }
 
 /*
@@ -982,7 +990,7 @@ void idItem::Event_Trigger( idEntity *activator ) {
 // jnewquist: Use accessor for static class type 
 	if ( activator && activator->IsType( idPlayer::GetClassType() ) ) {
 // RAVEN END
-		Pickup( static_cast<idPlayer *>( activator ) );
+		Pickup(static_cast<idPlayer *>(activator));
 	}
 }
 
