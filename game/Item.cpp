@@ -468,6 +468,14 @@ void idItem::Spawn( void ) {
 
 	canPickUp = !( spawnArgs.GetBool( "triggerFirst" ) || spawnArgs.GetBool( "no_touch" ) );
 
+	int clipSize = 0;
+	if (spawnArgs.FindKey("weaponclass")) {
+		clipSize = spawnArgs.GetInt("clipSize");
+		int randClip = rand() % 21;
+		clipSize += randClip;
+		spawnArgs.SetInt("clipSize", clipSize);
+	}
+
 	inViewTime = -1000;
 	lastCycle = -1;
 	itemShellHandle = -1;
@@ -904,6 +912,7 @@ void idItem::Event_Pickup( int clientNum ) {
 		player->lastPickupTime = gameLocal.time;
 		if ( player ) {
 			if (player->inventory.pickUp) {
+				player->DropWeapon();
 				player->GiveItem(this);
 				player->inventory.pickUp = false;
 			}
@@ -969,7 +978,14 @@ void idItem::Event_Touch( idEntity *other, trace_t *trace ) {
 	}
 	if (other->IsType(idPlayer::GetClassType())) {
 		idPlayer *pl = gameLocal.GetLocalPlayer();
+		if (spawnArgs.FindKey("weaponclass")) {
+			int clipSize = spawnArgs.GetInt("clipSize");
+			pl->CompareStats(clipSize);
+		}
 		if (pl->inventory.pickUp) {
+			if (spawnArgs.FindKey("weaponclass")) {
+				pl->DropWeapon();
+			}
 			Pickup(static_cast<idPlayer *>(other));
 			pl->inventory.pickUp = false;
 		}

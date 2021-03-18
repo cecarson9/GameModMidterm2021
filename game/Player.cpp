@@ -3476,6 +3476,11 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	_hud->StateChanged( gameLocal.time );
 }
 
+void idPlayer::CompareStats(int clipSize) {
+	hud->SetStateInt("new_clip_size", clipSize);
+	hud->HandleNamedEvent("compareStats");
+}
+
 /*
 ===============
 idPlayer::UpdateHudWeapon
@@ -8606,7 +8611,6 @@ void idPlayer::PerformImpulse( int impulse ) {
 			for (int i = 0; i < 30; i++) {
 				inventory.pickUp = true;
 			}
-			DropWeapon();
 			break;
 		}
 
