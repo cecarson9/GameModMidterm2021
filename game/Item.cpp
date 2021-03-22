@@ -980,14 +980,17 @@ void idItem::Event_Touch( idEntity *other, trace_t *trace ) {
 		idPlayer *pl = gameLocal.GetLocalPlayer();
 		if (spawnArgs.FindKey("weaponclass")) {
 			int clipSize = spawnArgs.GetInt("clipSize");
-			const char *weaponName = spawnArgs.GetString("weaponname");
+			const char *weaponName = spawnArgs.GetString("editor_usage");
 			pl->CompareStats(clipSize, weaponName);
+		}
+		else {
+			pl->HideStats();
 		}
 		if (pl->inventory.pickUp) {
 			if (spawnArgs.FindKey("weaponclass")) {
 				pl->DropWeapon();
 			}
-			pl->GiveWeapon(this, spawnArgs.GetInt("clipSize"));
+			pl->GiveWeapon(this, spawnArgs.GetInt("damage"), spawnArgs.GetFloat("fireRate"), spawnArgs.GetInt("clipSize"));
 			pl->inventory.pickUp = false;
 		}
 	}

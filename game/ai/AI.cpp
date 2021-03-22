@@ -3678,7 +3678,7 @@ void idAI::OnDeath( void ){
 	idVec3 origin;
 	idMat3 axis;
 	GetPosition(origin, axis);
-	const char *weapons[10] = { "weapon_blaster", "weapon_machinegun", "weapon_shotgun", "weapon_dmg", "weapon_grenadelauncher", "weapon_hyperblaster", "weapon_lightninggun", "weapon_nailgun", "weapon_railgun", "weapon_rocketlauncher" };
+	const char *weapons[9] = { "weapon_machinegun", "weapon_shotgun", "weapon_dmg", "weapon_grenadelauncher", "weapon_hyperblaster", "weapon_lightninggun", "weapon_nailgun", "weapon_railgun", "weapon_rocketlauncher" };
 	int randIndex = rand() % 10;
 	spawn.Set("classname", weapons[randIndex]);
 	spawn.Set("origin", origin.ToString());

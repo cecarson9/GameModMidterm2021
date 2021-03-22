@@ -201,10 +201,19 @@ public:
 	int						xp;
 	int						xpReq;
 	int						xpScale;
+
+	struct weaponStats {
+		char *name;
+		int damage;
+		int fireRate;
+		int clipSize;
+	};
+
+	struct weaponStats		stats[9];
 // RITUAL BEGIN
 // squirrel: Mode-agnostic buymenus
 	int						carryOverWeapons;
-	bool						pickUp;
+	bool					pickUp;
 // RITUAL END
 	int						powerups;
 	int						armor;
@@ -343,7 +352,6 @@ public:
 	idEntityPtr<rvViewWeapon>		weaponViewModel;
 	idEntityPtr<idAnimatedEntity>	weaponWorldModel;
 	const idDeclEntityDef*			weaponDef;
-
 
  	idUserInterface *		hud;				// Common hud
 	idUserInterface *		mphud;				// hud overlay containing MP elements
@@ -531,7 +539,7 @@ public:
 	bool					Give( const char *statname, const char *value, bool dropped = false );
 	bool					GiveItem( idItem *item );
 	void					GiveItem( const char *name );
-	void					GiveWeapon(idItem *item, int clipSize);
+	void					GiveWeapon(idItem *item, int damage, float fireRate, int clipSize);
 	
 	// Inventory
 	bool					GiveInventoryItem( idDict *item );
@@ -650,6 +658,7 @@ public:
 	void					UpdateHudStats( idUserInterface *hud );
  	void					UpdateHudAmmo( idUserInterface *hud );
 	void					CompareStats(int clipSize, const char *weaponName);
+	void					HideStats(void);
  	void					ShowTip( const char *title, const char *tip, bool autoHide );
  	void					HideTip( void );
  	bool					IsTipVisible( void ) { return tipUp; };

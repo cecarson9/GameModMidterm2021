@@ -347,6 +347,15 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	xpReq			= dict.GetInt( "xpReq", "10" );
 	xpScale			= dict.GetInt("xpScale", "2");
 	pickUp			= false;
+
+	for (int i = 1; i < 10; i++) {
+		struct weaponStats weap;
+		strcpy(weap.name, dict.GetString(va("def_weapon%d", i)));
+		weap.damage = 0;
+		weap.fireRate = 0;
+		weap.clipSize = 0;
+		stats[i - 1] = weap;
+	}
 	// ammo
 	for( i = 0; i < MAX_AMMOTYPES; i++ ) {
 		name = rvWeapon::GetAmmoNameForIndex ( i );
@@ -3482,6 +3491,10 @@ void idPlayer::CompareStats(int clipSize, const char *weaponName) {
 	hud->HandleNamedEvent("compareStats");
 }
 
+void idPlayer::HideStats(void) {
+	hud->HandleNamedEvent("hideStats");
+}
+
 /*
 ===============
 idPlayer::UpdateHudWeapon
@@ -4316,7 +4329,7 @@ bool idPlayer::GiveItem( idItem *item ) {
 	return gave;
 }
 
-void idPlayer::GiveWeapon(idItem *item, int clipSize) {
+void idPlayer::GiveWeapon(idItem *item, int damage, float fireRate, int clipSize) {
 	item->Pickup(static_cast<idPlayer*>(this));
 	if (item->spawnArgs.FindKey("weaponclass")) {
 		item->spawnArgs.SetInt("clipSize", clipSize);
