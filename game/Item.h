@@ -216,6 +216,7 @@ private:
 	int						team;
 	int						powerup;
 	bool					dropped;
+
 	
 	void					Event_ResetFlag( void );
 	void					Event_LinkTrigger( void );

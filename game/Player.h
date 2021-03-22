@@ -531,6 +531,7 @@ public:
 	bool					Give( const char *statname, const char *value, bool dropped = false );
 	bool					GiveItem( idItem *item );
 	void					GiveItem( const char *name );
+	void					GiveWeapon(idItem *item, int clipSize);
 	
 	// Inventory
 	bool					GiveInventoryItem( idDict *item );
@@ -648,7 +649,7 @@ public:
 #endif
 	void					UpdateHudStats( idUserInterface *hud );
  	void					UpdateHudAmmo( idUserInterface *hud );
-	void					CompareStats(int clipSize);
+	void					CompareStats(int clipSize, const char *weaponName);
  	void					ShowTip( const char *title, const char *tip, bool autoHide );
  	void					HideTip( void );
  	bool					IsTipVisible( void ) { return tipUp; };

@@ -3476,8 +3476,9 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	_hud->StateChanged( gameLocal.time );
 }
 
-void idPlayer::CompareStats(int clipSize) {
+void idPlayer::CompareStats(int clipSize, const char *weaponName) {
 	hud->SetStateInt("new_clip_size", clipSize);
+	hud->SetStateString("new_weaponname", weaponName);
 	hud->HandleNamedEvent("compareStats");
 }
 
@@ -4313,6 +4314,13 @@ bool idPlayer::GiveItem( idItem *item ) {
 //RITUAL END
 
 	return gave;
+}
+
+void idPlayer::GiveWeapon(idItem *item, int clipSize) {
+	item->Pickup(static_cast<idPlayer*>(this));
+	if (item->spawnArgs.FindKey("weaponclass")) {
+		item->spawnArgs.SetInt("clipSize", clipSize);
+	}
 }
 
 /*
