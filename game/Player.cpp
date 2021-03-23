@@ -349,13 +349,12 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 	pickUp			= false;
 
 	for (int i = 1; i < 10; i++) {
-		struct weaponStats weap;
-		strcpy(weap.name, dict.GetString(va("def_weapon%d", i)));
-		weap.damage = 0;
-		weap.fireRate = 0;
-		weap.clipSize = 0;
-		stats[i - 1] = weap;
+		stats[i - 1].weaponName = dict.GetString(va("def_weapon%d", i));
+		stats[i - 1].damage = 0;
+		stats[i - 1].fireRate = 0.1;
+		stats[i - 1].clipSize = 40;
 	}
+
 	// ammo
 	for( i = 0; i < MAX_AMMOTYPES; i++ ) {
 		name = rvWeapon::GetAmmoNameForIndex ( i );
@@ -3485,7 +3484,9 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	_hud->StateChanged( gameLocal.time );
 }
 
-void idPlayer::CompareStats(int clipSize, const char *weaponName) {
+void idPlayer::CompareStats(int damage, float fireRate, int clipSize, const char *weaponName, int status) {
+	hud->SetStateInt("new_damage", damage);
+	hud->SetStateFloat("new_fire_rate", fireRate);
 	hud->SetStateInt("new_clip_size", clipSize);
 	hud->SetStateString("new_weaponname", weaponName);
 	hud->HandleNamedEvent("compareStats");
@@ -3493,6 +3494,13 @@ void idPlayer::CompareStats(int clipSize, const char *weaponName) {
 
 void idPlayer::HideStats(void) {
 	hud->HandleNamedEvent("hideStats");
+}
+
+void idPlayer::UpdateCurrentStats(int damage, float fireRate, int clipSize, const char *weaponName) {
+	hud->SetStateInt("old_damage", damage);
+	hud->SetStateFloat("old_fire_rate", fireRate);
+	hud->SetStateInt("old_clip_size", clipSize);
+	hud->SetStateString("old_weaponname", weaponName);
 }
 
 /*
@@ -4331,8 +4339,12 @@ bool idPlayer::GiveItem( idItem *item ) {
 
 void idPlayer::GiveWeapon(idItem *item, int damage, float fireRate, int clipSize) {
 	item->Pickup(static_cast<idPlayer*>(this));
-	if (item->spawnArgs.FindKey("weaponclass")) {
-		item->spawnArgs.SetInt("clipSize", clipSize);
+	for (int i = 0; i < 9; i++) {
+		if (item->spawnArgs.GetString("inv_weapon") == inventory.stats[i].weaponName) {
+			inventory.stats[i].damage = damage;
+			inventory.stats[i].fireRate = fireRate;
+			inventory.stats[i].clipSize = clipSize;
+		}
 	}
 }
 
@@ -8632,6 +8644,10 @@ void idPlayer::PerformImpulse( int impulse ) {
 			for (int i = 0; i < 30; i++) {
 				inventory.pickUp = true;
 			}
+			break;
+		}
+		case IMPULSE_42: {
+			HideStats();
 			break;
 		}
 

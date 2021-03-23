@@ -72,6 +72,7 @@ const int IMPULSE_28			= 28;			// vote yes
 const int IMPULSE_29			= 29;			// vote no
 const int IMPULSE_40			= 40;			// repeast last radio chatter
 const int IMPULSE_41			= 41;			// swap weapons
+const int IMPULSE_42			= 42;			// hide stats
 
 
 

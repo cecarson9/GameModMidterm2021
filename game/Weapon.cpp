@@ -624,7 +624,13 @@ void rvWeapon::Spawn ( void ) {
 	weaponOffsetTime			= spawnArgs.GetFloat( "weaponOffsetTime", "400" );
 	weaponOffsetScale			= spawnArgs.GetFloat( "weaponOffsetScale", "0.005" );
 
-	fireRate	= SEC2MS ( spawnArgs.GetFloat ( "fireRate" ) );
+	float rate;
+	for (int i = 0; i < 9; i++) {
+		if (spawnArgs.GetString("inv_weapon") == owner->inventory.stats[i].weaponName) {
+			rate = owner->inventory.stats[i].fireRate;
+		}
+	}
+	fireRate	= SEC2MS ( rate );
 	altFireRate	= SEC2MS ( spawnArgs.GetFloat ( "altFireRate" ) );
 	if( altFireRate == 0 ) {
 		altFireRate = fireRate;
@@ -654,7 +660,14 @@ void rvWeapon::Spawn ( void ) {
  	muzzleOffset		= weaponDef->dict.GetFloat ( "muzzleOffset", "14" );
 
 	// Ammo
-	clipSize			= spawnArgs.GetInt( "clipSize" );
+	for (int i = 0; i < 9; i++) {
+		if (spawnArgs.GetString("inv_weapon") == owner->inventory.stats[i].weaponName) {
+			clipSize = owner->inventory.stats[i].clipSize;
+		}
+	}
+
+	owner->UpdateCurrentStats(0, rate, clipSize, spawnArgs.GetString("editor_usage"));
+
 	ammoRequired		= spawnArgs.GetInt( "ammoRequired" );
 	lowAmmo				= spawnArgs.GetInt( "lowAmmo" );
 	ammoType			= GetAmmoIndexForName( spawnArgs.GetString( "ammoType" ) );

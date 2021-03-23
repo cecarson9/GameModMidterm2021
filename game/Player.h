@@ -203,10 +203,11 @@ public:
 	int						xpScale;
 
 	struct weaponStats {
-		char *name;
+		const char *weaponName;
 		int damage;
-		int fireRate;
+		float fireRate;
 		int clipSize;
+		int status;
 	};
 
 	struct weaponStats		stats[9];
@@ -657,8 +658,9 @@ public:
 #endif
 	void					UpdateHudStats( idUserInterface *hud );
  	void					UpdateHudAmmo( idUserInterface *hud );
-	void					CompareStats(int clipSize, const char *weaponName);
+	void					CompareStats(int damage, float fireRate, int clipSize, const char *weaponName, int status);
 	void					HideStats(void);
+	void					UpdateCurrentStats(int damage, float fireRate, int clipSize, const char *weaponName);
  	void					ShowTip( const char *title, const char *tip, bool autoHide );
  	void					HideTip( void );
  	bool					IsTipVisible( void ) { return tipUp; };
