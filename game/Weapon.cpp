@@ -660,13 +660,15 @@ void rvWeapon::Spawn ( void ) {
  	muzzleOffset		= weaponDef->dict.GetFloat ( "muzzleOffset", "14" );
 
 	// Ammo
+	int status = 0;
 	for (int i = 0; i < 9; i++) {
 		if (spawnArgs.GetString("inv_weapon") == owner->inventory.stats[i].weaponName) {
 			clipSize = owner->inventory.stats[i].clipSize;
+			status = owner->inventory.stats[i].status;
 		}
 	}
 
-	owner->UpdateCurrentStats(0, rate, clipSize, spawnArgs.GetString("editor_usage"));
+	owner->UpdateCurrentStats(0, rate, clipSize, spawnArgs.GetString("editor_usage"), status);
 
 	ammoRequired		= spawnArgs.GetInt( "ammoRequired" );
 	lowAmmo				= spawnArgs.GetInt( "lowAmmo" );

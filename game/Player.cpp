@@ -353,6 +353,7 @@ void idInventory::RestoreInventory( idPlayer *owner, const idDict &dict ) {
 		stats[i - 1].damage = 0;
 		stats[i - 1].fireRate = 0.1;
 		stats[i - 1].clipSize = 40;
+		stats[i - 1].status = 0;
 	}
 
 	// ammo
@@ -3489,6 +3490,24 @@ void idPlayer::CompareStats(int damage, float fireRate, int clipSize, const char
 	hud->SetStateFloat("new_fire_rate", fireRate);
 	hud->SetStateInt("new_clip_size", clipSize);
 	hud->SetStateString("new_weaponname", weaponName);
+	if (status == 0) {
+		hud->SetStateString("new_status", "");
+	}
+	else if (status == 1) {
+		hud->SetStateString("new_status", "Fire");
+	}
+	else if (status == 2) {
+		hud->SetStateString("new_status", "Electric");
+	}
+	else if (status == 3) {
+		hud->SetStateString("new_status", "Poison");
+	}
+	else if (status == 4) {
+		hud->SetStateString("new_status", "Ice");
+	}
+	else if (status == 5) {
+		hud->SetStateString("new_status", "Radiation");
+	}
 	hud->HandleNamedEvent("compareStats");
 }
 
@@ -3496,11 +3515,29 @@ void idPlayer::HideStats(void) {
 	hud->HandleNamedEvent("hideStats");
 }
 
-void idPlayer::UpdateCurrentStats(int damage, float fireRate, int clipSize, const char *weaponName) {
+void idPlayer::UpdateCurrentStats(int damage, float fireRate, int clipSize, const char *weaponName, int status) {
 	hud->SetStateInt("old_damage", damage);
 	hud->SetStateFloat("old_fire_rate", fireRate);
 	hud->SetStateInt("old_clip_size", clipSize);
 	hud->SetStateString("old_weaponname", weaponName);
+	if (status == 0) {
+		hud->SetStateString("old_status", "");
+	}
+	else if (status == 1) {
+		hud->SetStateString("old_status", "Fire");
+	}
+	else if (status == 2) {
+		hud->SetStateString("old_status", "Electric");
+	}
+	else if (status == 3) {
+		hud->SetStateString("old_status", "Poison");
+	}
+	else if (status == 4) {
+		hud->SetStateString("old_status", "Ice");
+	}
+	else if (status == 5) {
+		hud->SetStateString("old_status", "Radiation");
+	}
 }
 
 /*
@@ -4337,13 +4374,14 @@ bool idPlayer::GiveItem( idItem *item ) {
 	return gave;
 }
 
-void idPlayer::GiveWeapon(idItem *item, int damage, float fireRate, int clipSize) {
+void idPlayer::GiveWeapon(idItem *item, int damage, float fireRate, int clipSize, int status) {
 	item->Pickup(static_cast<idPlayer*>(this));
 	for (int i = 0; i < 9; i++) {
 		if (item->spawnArgs.GetString("inv_weapon") == inventory.stats[i].weaponName) {
 			inventory.stats[i].damage = damage;
 			inventory.stats[i].fireRate = fireRate;
 			inventory.stats[i].clipSize = clipSize;
+			inventory.stats[i].status = status;
 		}
 	}
 }

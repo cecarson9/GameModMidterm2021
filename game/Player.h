@@ -540,7 +540,7 @@ public:
 	bool					Give( const char *statname, const char *value, bool dropped = false );
 	bool					GiveItem( idItem *item );
 	void					GiveItem( const char *name );
-	void					GiveWeapon(idItem *item, int damage, float fireRate, int clipSize);
+	void					GiveWeapon(idItem *item, int damage, float fireRate, int clipSize, int status);
 	
 	// Inventory
 	bool					GiveInventoryItem( idDict *item );
@@ -660,7 +660,7 @@ public:
  	void					UpdateHudAmmo( idUserInterface *hud );
 	void					CompareStats(int damage, float fireRate, int clipSize, const char *weaponName, int status);
 	void					HideStats(void);
-	void					UpdateCurrentStats(int damage, float fireRate, int clipSize, const char *weaponName);
+	void					UpdateCurrentStats(int damage, float fireRate, int clipSize, const char *weaponName, int status);
  	void					ShowTip( const char *title, const char *tip, bool autoHide );
  	void					HideTip( void );
  	bool					IsTipVisible( void ) { return tipUp; };

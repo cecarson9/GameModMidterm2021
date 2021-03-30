@@ -493,6 +493,29 @@ void idItem::Spawn( void ) {
 		spawnArgs.SetFloat("fireRate", fireRate);
 	}
 
+	int status = 0;
+	int randStatus = rand() % 100;
+	if (randStatus < 50) {
+		status = 0;
+	}
+	if (randStatus >= 50 && randStatus < 60) {
+		status = 1;
+	}
+	if (randStatus >= 60 && randStatus < 70) {
+		status = 2;
+	}
+	if (randStatus >= 70 && randStatus < 80) {
+		status = 3;
+	}
+	if (randStatus >= 80 && randStatus < 90) {
+		status = 4;
+	}
+	if (randStatus >= 90 && randStatus < 100) {
+		status = 5;
+	}
+
+	spawnArgs.SetInt("status", status);
+
 	inViewTime = -1000;
 	lastCycle = -1;
 	itemShellHandle = -1;
@@ -995,31 +1018,12 @@ void idItem::Event_Touch( idEntity *other, trace_t *trace ) {
 	}
 	if (other->IsType(idPlayer::GetClassType())) {
 		idPlayer *pl = gameLocal.GetLocalPlayer();
-		int status = 0;
 		if (spawnArgs.FindKey("weaponclass")) {
 			int damage = spawnArgs.GetInt("damage");
 			float fireRate = spawnArgs.GetFloat("fireRate");
 			int clipSize = spawnArgs.GetInt("clipSize");
 			const char *weaponName = spawnArgs.GetString("editor_usage");
-			int randStatus = rand() % 100;
-			if (randStatus < 50) {
-				status = 0;
-			}
-			if (randStatus >= 50 && randStatus < 60) {
-				status = 1;
-			}
-			if (randStatus >= 60 && randStatus < 70) {
-				status = 2;
-			}
-			if (randStatus >= 70 && randStatus < 80) {
-				status = 3;
-			}
-			if (randStatus >= 80 && randStatus < 90) {
-				status = 4;
-			}
-			if (randStatus >= 90 && randStatus < 100) {
-				status = 5;
-			}
+			int status = spawnArgs.GetInt("status");
 			pl->CompareStats(damage, fireRate, clipSize, weaponName, status);
 		}
 		else {
@@ -1028,7 +1032,7 @@ void idItem::Event_Touch( idEntity *other, trace_t *trace ) {
 		if (pl->inventory.pickUp) {
 			if (spawnArgs.FindKey("weaponclass")) {
 				pl->DropWeapon();
-				pl->GiveWeapon(this, spawnArgs.GetInt("damage"), spawnArgs.GetFloat("fireRate"), spawnArgs.GetInt("clipSize"));
+				pl->GiveWeapon(this, spawnArgs.GetInt("damage"), spawnArgs.GetFloat("fireRate"), spawnArgs.GetInt("clipSize"), spawnArgs.GetInt("status"));
 			}
 			else {
 				Pickup(static_cast<idPlayer *>(other));
